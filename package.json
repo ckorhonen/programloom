@@ -16,8 +16,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "cf:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
-    "cf:deploy": "opennextjs-cloudflare deploy --dangerouslyUseUnsupportedNextVersion",
-    "cf:preview": "opennextjs-cloudflare preview --dangerouslyUseUnsupportedNextVersion"
+    "cf:deploy": "opennextjs-cloudflare deploy",
+    "cf:preview": "opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20.2",
