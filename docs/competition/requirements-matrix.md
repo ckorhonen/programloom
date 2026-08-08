@@ -49,4 +49,4 @@ P0 rows are the minimum credible product and must use real persistence, not stat
 
 ## Evidence Baseline
 
-This matrix began as a requirements freeze and now carries a local implementation overlay. `VERIFIED_LOCAL` means the behavior has direct local test or route evidence; `PARTIAL_LOCAL` means the local slice is useful but omits one or more frozen capabilities; `BLOCKED_EXTERNAL` means the remaining proof requires a dedicated deployment, provider, or credential boundary. None of these statuses claim live production readiness.
+This matrix began as a requirements freeze and now carries local plus sandbox evidence. `VERIFIED_LOCAL` means the behavior has direct local test or route evidence; `PARTIAL_LOCAL` means the local slice is useful but omits one or more frozen capabilities; `BLOCKED_EXTERNAL` means the remaining proof requires a provider, credential, background-workflow, or production-auth boundary. The live sandbox does not change any status that requires production readiness.

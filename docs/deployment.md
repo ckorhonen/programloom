@@ -1,15 +1,32 @@
 # Deployment boundary
 
-The repository is structured for a Cloudflare-native deployment through the pinned OpenNext adapter, with D1 for durable records, R2 for private file bytes, and Queues/Cron for reminders and sync jobs. `open-next.config.ts`, `wrangler.jsonc`, `bun run cf:build`, and the Wrangler/OpenNext scripts are present for a separately authorized release lane. The committed scaffold intentionally has no D1/R2 bindings until a dedicated target is approved.
+ProgramLoom is deployed as a dedicated Cloudflare demo sandbox through the pinned OpenNext/Wrangler path. The sandbox is synthetic-data-only and is not a production multi-tenant release because it deliberately has no authentication or live provider credentials.
 
-This competition receipt does not claim a live deployment. The workspace has no verified dedicated production target for this application, and the live Airtable, Accelevents, R2, and email credentials required for safe smoke tests are absent. The unexpected external resource observed during preflight is quarantined and is not a deployment target.
+## Current target
 
-Before a release owner deploys:
+- Worker: `programloom-demo`
+- URL: <https://programloom-demo.sourcebottle.workers.dev>
+- Account: `Chris Korhonen` / `ea76e5b24c115e61c4ca83acb28b7e4d`
+- Durable binding: `PROGRAMLOOM_DB` → `programloom-demo-db` (`0d60c006-0e46-4bf4-85c5-a4267ce020f6`)
+- Migration: `migrations/0001_domain_snapshots.sql`
+- Static assets: OpenNext `ASSETS` binding
+- Ownership: Wrangler/OpenNext only; no Terraform or Pulumi resource owns this target
 
-1. Choose and record a separately named dedicated target.
-2. Confirm account, project, binding, migration, and rollback ownership.
-3. Run `bun run cf:build` from the pinned Bun/Wrangler toolchain, then provision and bind D1/R2/Queues/Cron before treating the worker as production-capable.
-4. Verify `/api/healthz` against the exact deployment and check that provider states match configured credentials.
-5. Run public, reset, API, and dry-run smoke checks, then monitor the release before enabling any live provider.
+The Worker selects D1 through `getCloudflareContext` and keeps the file adapter for local Node development. R2, Queues, Cron, Airtable, Accelevents live sync, and email delivery are not configured; the current app exposes file metadata, reminder records, and an Accelevents no-write plan without claiming those external systems are live.
 
-No DNS, production database, paid service, provider credential, or external recipient was changed by this repository build.
+## Release procedure
+
+```bash
+bun run format:check
+bun run typecheck
+bun run lint
+bun run test
+bun run build
+bun run cf:build
+./node_modules/.bin/wrangler d1 migrations list programloom-demo-db --remote
+bun run cf:deploy
+```
+
+After deployment, verify the exact Worker version with `wrangler deployments list --name programloom-demo`, read `/api/healthz`, run the live Chromium journey, run the direct API/privacy smoke, and reset the sandbox to its deterministic seed. Do not enable a provider or send a recipient message from this sandbox.
+
+The unexpected D1 resource `program-harbor` observed during preflight remains quarantined and is not a deployment target. No existing Worker, DNS record, database, queue, bucket, provider credential, or external recipient was modified for this deployment.

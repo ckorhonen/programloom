@@ -2,7 +2,7 @@
 
 ProgramLoom is a resettable event-program workspace for the work between “call for speakers” and “published agenda.” It gives a program team one operational path for conditional CFPs, routing, human evaluation, speaker onboarding, schedule conflicts, communications previews, calendar artifacts, and a public schedule.
 
-The repository ships with a deterministic `AI Engineer Sandbox Summit` demo. It uses a real local file-backed snapshot behind the same storage port used by the D1 seam, so changes survive reloads and the demo can be reset to a known fingerprint. External providers are represented as explicit dry-run or blocked states until credentials and dedicated resources are verified.
+The repository ships with a deterministic `AI Engineer Sandbox Summit` demo. Local development uses a real file-backed snapshot, while the Cloudflare Worker resolves the same storage port to the dedicated D1 sandbox binding. Changes survive reloads and the demo can be reset to a known fingerprint. External providers are represented as explicit dry-run or blocked states until credentials and dedicated resources are verified.
 
 ## Run it
 
@@ -29,6 +29,8 @@ Local state is written to `.data/programloom.json`, which is ignored by Git. Use
 
 Public schedule/speaker routes and the default snapshot API use redacted projections. The full snapshot header is a demo test harness only and is not an authentication mechanism for production.
 
+The current live sandbox is [programloom-demo.sourcebottle.workers.dev](https://programloom-demo.sourcebottle.workers.dev). It is a D1-backed demo environment for verification, not a production multi-tenant deployment.
+
 ## Verify it
 
 ```bash
@@ -38,15 +40,16 @@ bun run lint
 bun run test
 bun run build
 bun run e2e -- --project=chromium
+bun run cf:build
 ```
 
 The browser test runs the core path from conditional form logic through persisted submission, evaluator review, acceptance, portal completion, conflict override, calendar artifact, dry-run integration, and public schedule. See [docs/verification-report.md](docs/verification-report.md) for the latest receipt and [docs/demo-runbook.md](docs/demo-runbook.md) for the narrated path.
 
 ## Architecture
 
-The App Router UI and route handlers sit above a storage-agnostic domain layer. `src/domain/` contains pure rules for conditional fields, routing, scoring, status transitions, due dates, templates, calendar output, schedule conflicts, public projections, tasks, reminders, and idempotency. `src/storage/` contains the local file adapter, D1-compatible seam, snapshot receipt, and object metadata boundary. `src/seed/` owns the resettable event fixture.
+The App Router UI and route handlers sit above a storage-agnostic domain layer. `src/domain/` contains pure rules for conditional fields, routing, scoring, status transitions, due dates, templates, calendar output, schedule conflicts, public projections, tasks, reminders, and idempotency. `src/storage/` contains the local file adapter, D1-compatible seam, snapshot receipt, and object metadata boundary. `src/server/store.ts` selects the file adapter in local Node development and the `PROGRAMLOOM_DB` binding in the OpenNext Worker. `src/seed/` owns the resettable event fixture.
 
-The current production boundary is deliberately honest: local persistence is verified; Cloudflare, Airtable, Accelevents, and email delivery are documented seams or dry-run providers, not claimed live integrations. See [docs/deployment.md](docs/deployment.md) and [docs/limitations.md](docs/limitations.md).
+The current release boundary is deliberately honest: the Cloudflare sandbox and D1 persistence are live-verified, while Airtable, Accelevents, and email delivery remain documented seams or dry-run providers. The sandbox has no production authentication and must not receive real event data. See [docs/deployment.md](docs/deployment.md) and [docs/limitations.md](docs/limitations.md).
 
 ## Project map
 

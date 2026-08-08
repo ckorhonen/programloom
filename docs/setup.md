@@ -14,7 +14,7 @@ cp .env.example .env.local
 bun run dev
 ```
 
-The app creates `.data/programloom.json` on its first server read. That file is a local demo database and is ignored by Git. It is safe to remove when the app is stopped; the next request recreates the deterministic seed. The in-app reset calls the same seed path and never truncates unrelated files.
+The app creates `.data/programloom.json` on its first local server read. That file is a local demo database and is ignored by Git. It is safe to remove when the app is stopped; the next request recreates the deterministic seed. The deployed Worker uses the `PROGRAMLOOM_DB` D1 binding instead. The in-app reset calls the same seed path and never truncates unrelated files.
 
 ## Checks
 
@@ -30,6 +30,8 @@ bun run e2e -- --project=chromium
 `bun run e2e` starts the development server through Playwright when one is not already running. The test itself resets the demo before exercising the journey, so it does not depend on a prior local state.
 
 The Cloudflare bundle can be checked locally with `bun run cf:build`. It uses the committed OpenNext/Wrangler scaffold and the explicit `--dangerouslyUseUnsupportedNextVersion` compatibility flag required by the current Next 16.3/OpenNext 1.20 toolchain; it is a bundle proof, not a live deployment proof.
+
+The dedicated sandbox deployment is owned by Wrangler. Apply `migrations/` to the named D1 database, run `bun run cf:build`, then `bun run cf:deploy`. Verify `/api/healthz`, the live browser journey, and the public privacy sentinels before sharing the sandbox URL.
 
 ## Configuration
 

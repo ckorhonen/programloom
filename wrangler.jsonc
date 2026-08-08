@@ -4,6 +4,9 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-08-08",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "vars": {
+    "DEMO_MODE": "true",
+  },
   "d1_databases": [
     {
       "binding": "PROGRAMLOOM_DB",

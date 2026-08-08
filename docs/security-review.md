@@ -8,8 +8,8 @@
 - File bytes are separated from metadata behind `ObjectStore`; the local object store rejects traversal outside its root.
 - Schedule conflict overrides require a non-empty reason and append an audit record.
 - Demo reset is guarded by `DEMO_MODE` and only writes the seeded local event snapshot.
-- Live email, Accelevents, Airtable, and Cloudflare states are explicit blocked/dry-run/unverified values, not success fixtures.
+- Live email, Accelevents, and Airtable states are explicit blocked/dry-run values. Cloudflare/D1 is verified only for the dedicated sandbox, not as proof of production readiness.
 
 ## Remaining work
 
-The local demo does not yet provide production authentication, CSRF/session middleware, distributed rate limiting, signed R2 URLs, granular relational transactions, or a deployed secret manager. The demo-admin snapshot header is a test harness boundary, not authentication. These are release blockers for a real multi-tenant deployment and are documented rather than implied away.
+The sandbox does not yet provide production authentication, CSRF/session middleware, distributed rate limiting, signed R2 URLs, granular relational transactions, or a deployed secret manager. The demo-admin snapshot header is a test harness boundary, not authentication. These remain release blockers for a real multi-tenant deployment; the live URL is safe only for the synthetic seeded/demo data it currently contains.
