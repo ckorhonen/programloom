@@ -1,4 +1,5 @@
 import { join } from "node:path";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import {
   acknowledgeConflict,
   detectScheduleConflicts,
@@ -11,14 +12,45 @@ import {
   type Submission,
 } from "@/domain";
 import { createSandboxSeed, sandboxEventId } from "@/seed";
-import { FileBackedStorageAdapter, buildResetReceipt } from "@/storage";
+import {
+  D1SnapshotStorageAdapter,
+  FileBackedStorageAdapter,
+  buildResetReceipt,
+  type D1DatabaseLike,
+  type StorageAdapter,
+} from "@/storage";
 
 const dataFile =
   process.env.PROGRAMLOOM_DATA_FILE ?? join(process.cwd(), ".data", "programloom.json");
-const storage = new FileBackedStorageAdapter(dataFile);
+const localStorage = new FileBackedStorageAdapter(dataFile);
+let resolvedStorage: { adapter: StorageAdapter; backend: "local-file" | "d1" } | undefined;
 let mutationQueue: Promise<unknown> = Promise.resolve();
 
+async function getStorage(): Promise<{ adapter: StorageAdapter; backend: "local-file" | "d1" }> {
+  if (resolvedStorage) return resolvedStorage;
+
+  resolvedStorage = { adapter: localStorage, backend: "local-file" };
+  try {
+    const context = await getCloudflareContext({ async: true });
+    const env = context.env as typeof context.env & { PROGRAMLOOM_DB?: D1DatabaseLike };
+    if (env.PROGRAMLOOM_DB) {
+      resolvedStorage = {
+        adapter: new D1SnapshotStorageAdapter(env.PROGRAMLOOM_DB),
+        backend: "d1",
+      };
+    }
+  } catch {
+    // The local Next.js runtime has no Cloudflare binding context.
+  }
+  return resolvedStorage;
+}
+
+export async function getStorageBackend(): Promise<"local-file" | "d1"> {
+  return (await getStorage()).backend;
+}
+
 export async function getSnapshot(): Promise<DomainSnapshot> {
+  const storage = (await getStorage()).adapter;
   const current = await storage.readSnapshot();
   if (current.events[0]?.id !== sandboxEventId) {
     const seed = createSandboxSeed();
@@ -33,6 +65,7 @@ export async function resetDemo(): Promise<{
   receipt: ReturnType<typeof buildResetReceipt>;
 }> {
   const operation = mutationQueue.then(async () => {
+    const storage = (await getStorage()).adapter;
     const seed = createSandboxSeed();
     await storage.reset(seed);
     return { snapshot: seed, receipt: buildResetReceipt(seed) };
@@ -48,6 +81,7 @@ export async function updateSnapshot(
   mutator: (snapshot: DomainSnapshot) => DomainSnapshot | Promise<DomainSnapshot>,
 ): Promise<DomainSnapshot> {
   const operation = mutationQueue.then(async () => {
+    const storage = (await getStorage()).adapter;
     const next = await mutator(await getSnapshot());
     await storage.writeSnapshot(next);
     return next;

@@ -4,6 +4,14 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-08-08",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "d1_databases": [
+    {
+      "binding": "PROGRAMLOOM_DB",
+      "database_name": "programloom-demo-db",
+      "database_id": "0d60c006-0e46-4bf4-85c5-a4267ce020f6",
+      "migrations_dir": "migrations",
+    },
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
