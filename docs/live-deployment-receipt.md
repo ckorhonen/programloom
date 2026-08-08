@@ -27,6 +27,7 @@ The synthetic-data ProgramLoom sandbox is live and verified at [programloom-demo
 - Remote D1 readback showed one `default` snapshot row after final reset, served by the EWR primary, with no data outside the dedicated database queried.
 - Public privacy sentinels (`speaker1@example.test`, `portal_token_1`, `assignment_`, and `file_headshot_1`) were absent from the default snapshot and public HTML.
 - Live visual artifacts: [`live-landing.png`](../output/playwright/live-landing.png), [`live-schedule.png`](../output/playwright/live-schedule.png), and [`live-cfp-mobile.png`](../output/playwright/live-cfp-mobile.png).
+- Post-deploy watch: [`programloom-live-watch-20260808.jsonl`](../artifacts/deployment-smoke/programloom-live-watch-20260808.jsonl) contains 31 samples over 1,800 seconds; all 31 were `PASS` with zero state transitions across health, public snapshot privacy, public schedule privacy, and the Accelevents no-write planner.
 
 ## Mutations and boundaries
 
