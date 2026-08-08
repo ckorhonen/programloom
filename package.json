@@ -1,0 +1,49 @@
+{
+  "name": "programloom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ProgramLoom — an open-source event-program workspace for CFPs, speaker onboarding, evaluation, and scheduling.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "cf:build": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
+    "cf:deploy": "opennextjs-cloudflare deploy --dangerouslyUseUnsupportedNextVersion",
+    "cf:preview": "opennextjs-cloudflare preview --dangerouslyUseUnsupportedNextVersion"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "1.20.2",
+    "lucide-react": "0.468.0",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^8.0.1",
+    "@babel/preset-react": "^8.0.1",
+    "@babel/preset-typescript": "^8.0.1",
+    "@cloudflare/workers-types": "5.20260808.1",
+    "@playwright/test": "1.62.1",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "eslint": "9.39.1",
+    "prettier": "3.6.2",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10",
+    "wrangler": "4.59.2"
+  },
+  "packageManager": "bun@1.2.3",
+  "engines": {
+    "node": ">=22"
+  }
+}
