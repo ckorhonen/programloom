@@ -38,4 +38,4 @@ Vitest emits the Vite native-config migration warning for `vitest.config.ts`; it
 
 ## Evidence level
 
-Local persistence, domain behavior, route behavior, browser behavior, and visual layout have direct local evidence. The dedicated Cloudflare/D1 sandbox has live evidence, while R2/Queues/Cron, Airtable persistence, Accelevents live sync, email delivery, authentication, and production readiness remain blocked or unverified. Live screenshots are in `output/playwright/live-*.png`; the final deployment receipt records the exact platform version and reset state.
+Local persistence, domain behavior, route behavior, browser behavior, and visual layout have direct local evidence. The dedicated Cloudflare/D1 sandbox has live evidence, while R2/Queues/Cron, Airtable persistence, Accelevents live sync, email delivery, authentication, and production readiness remain blocked or unverified. Live screenshots are in `output/playwright/live-*.png`; the [live deployment receipt](live-deployment-receipt.md) records the exact platform version and reset state.

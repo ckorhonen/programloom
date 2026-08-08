@@ -29,7 +29,7 @@ Local state is written to `.data/programloom.json`, which is ignored by Git. Use
 
 Public schedule/speaker routes and the default snapshot API use redacted projections. The full snapshot header is a demo test harness only and is not an authentication mechanism for production.
 
-The current live sandbox is [programloom-demo.sourcebottle.workers.dev](https://programloom-demo.sourcebottle.workers.dev). It is a D1-backed demo environment for verification, not a production multi-tenant deployment.
+The current live sandbox is [programloom-demo.sourcebottle.workers.dev](https://programloom-demo.sourcebottle.workers.dev). It is a D1-backed demo environment for verification, not a production multi-tenant deployment. See the [live deployment receipt](docs/live-deployment-receipt.md) for the exact version and checks.
 
 ## Verify it
 

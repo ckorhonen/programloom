@@ -27,6 +27,6 @@ bun run cf:build
 bun run cf:deploy
 ```
 
-After deployment, verify the exact Worker version with `wrangler deployments list --name programloom-demo`, read `/api/healthz`, run the live Chromium journey, run the direct API/privacy smoke, and reset the sandbox to its deterministic seed. Do not enable a provider or send a recipient message from this sandbox.
+After deployment, verify the exact Worker version with `wrangler deployments list --name programloom-demo`, read `/api/healthz`, run the live Chromium journey, run the direct API/privacy smoke, and reset the sandbox to its deterministic seed. The current evidence is recorded in [docs/live-deployment-receipt.md](live-deployment-receipt.md). Do not enable a provider or send a recipient message from this sandbox.
 
 The unexpected D1 resource `program-harbor` observed during preflight remains quarantined and is not a deployment target. No existing Worker, DNS record, database, queue, bucket, provider credential, or external recipient was modified for this deployment.
