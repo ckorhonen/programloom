@@ -22,6 +22,7 @@ The synthetic-data ProgramLoom sandbox is live and verified at [programloom-demo
 
 - `/api/healthz` returned `ok: true`, `mode: "demo"`, `storage: "d1"`, and `cloudflare: "verified"`.
 - Repeated requests to `/api/healthz`, `/api/snapshot`, and `/api/openapi.json` passed 5/5 each after deployment; 10 HTML/API routes also returned 200.
+- The first concurrent probe immediately after the initial upload saw transient Cloudflare 404/1042 responses on those API routes; retry after edge propagation returned 200, and the subsequent repeated checks plus 30-minute watch had no errors or transitions.
 - The live Chromium journey passed CFP conditional fields, public submission, persisted evaluator review, acceptance, speaker portal task completion, schedule conflict override, calendar artifact, Accelevents dry-run, and public privacy projection.
 - Direct live API verification passed reset, public redaction, CFP persistence, review persistence, acceptance, portal file metadata, conflict detection/audit, calendar ICS, and dry-run assertions. The dry-run receipt reported `externalWrites: 0`.
 - Remote D1 readback showed one `default` snapshot row after final reset, served by the EWR primary, with no data outside the dedicated database queried.
